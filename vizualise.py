@@ -49,11 +49,6 @@ def turn_on_spines(ax, spine_width=1):
         spine.set_linewidth(spine_width)
 
 
-# Read marriage data
-marriage_data = pd.read_csv(
-    "https://raw.githubusercontent.com/holtzy/The-Python-Graph-Gallery/master/static/data/State_mariage_rate.csv"
-)
-
 employment_data = pd.read_csv(
     "data\employment_state_apc_20240901_pivot.csv", index_col=0
 )
@@ -165,4 +160,3 @@ plt.show()
 # add source
 # make all lines of code commented
 # How to add multiple choropleth maps to show different years.
-
