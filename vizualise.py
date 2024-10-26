@@ -5,12 +5,12 @@ from pypalettes import load_cmap
 
 
 # Function to annotate states
-def annotate_states(geo_df, ax):
+def annotate_states(geo_df, ax, value_col):
     states_to_annotate = list(geo_df["STUSPS"].unique())
     for state in states_to_annotate:
         centroid = geo_df.loc[geo_df["STUSPS"] == state, "centroid"].values[0]
         x, y = centroid.coords[0]
-        rate = geo_df.loc[geo_df["STUSPS"] == state, "y_2015"].values[0]
+        rate = geo_df.loc[geo_df["STUSPS"] == state, value_col].values[0]
         ax.text(
             x=x,
             y=y,
@@ -54,6 +54,10 @@ marriage_data = pd.read_csv(
     "https://raw.githubusercontent.com/holtzy/The-Python-Graph-Gallery/master/static/data/State_mariage_rate.csv"
 )
 
+employment_data = pd.read_csv(
+    "data\employment_state_apc_20240901_pivot.csv", index_col=0
+)
+
 # Read the shapefile
 shapefile_path = "data/tl_2023_us_state.shp"
 gdf = gpd.read_file(shapefile_path)
@@ -61,12 +65,12 @@ gdf = gpd.read_file(shapefile_path)
 gdf.plot()
 
 # Merge data
-data = gdf.merge(marriage_data, how="inner", left_on="NAME", right_on="state")
-print(len(data), len(marriage_data), len(gdf))
+data = gdf.merge(employment_data, how="inner", left_on="STUSPS", right_on="State")
+print(len(data), len(employment_data), len(gdf))
 
 # Get the set of states from both DataFrames
-states_in_df1 = set(gdf["NAME"])
-states_in_df2 = set(marriage_data["state"])
+states_in_df1 = set(gdf["STUSPS"])
+states_in_df2 = set(employment_data["State"])
 
 # States in df1 but not in df2
 states_not_in_intersect = states_in_df1.symmetric_difference(states_in_df2)
@@ -104,9 +108,11 @@ fig, ax = plt.subplots(
 # Create the main US plot on the first row spanning both columns
 ax_main = plt.subplot2grid((2, 2), (0, 0), colspan=2, fig=fig)
 
+column_to_plot = "apc_20240901"
+
 # Plot the contiguous U.S. on the main subplot
 contiguous_us.plot(
-    ax=ax_main, column="y_2015", cmap=cmap, edgecolor="black", linewidth=0.5
+    ax=ax_main, column=column_to_plot, cmap=cmap, edgecolor="black", linewidth=0.5
 )
 
 # Set axis properties for main plot
@@ -117,7 +123,9 @@ ax_main.set_ylim(24, 55)
 ax_alaska = plt.subplot2grid((2, 2), (1, 0), fig=fig)
 
 # Plot Alaska in the subplot
-alaska.plot(ax=ax_alaska, column="y_2015", cmap=cmap, edgecolor="black", linewidth=0.5)
+alaska.plot(
+    ax=ax_alaska, column=column_to_plot, cmap=cmap, edgecolor="black", linewidth=0.5
+)
 ax_alaska.set_xlim(-200, -100)
 ax_alaska.set_ylim(50, 73)
 
@@ -125,14 +133,16 @@ ax_alaska.set_ylim(50, 73)
 ax_hawaii = plt.subplot2grid((2, 2), (1, 1), fig=fig)
 
 # Plot Hawaii in the subplot
-hawaii.plot(ax=ax_hawaii, column="y_2015", cmap=cmap, edgecolor="black", linewidth=0.5)
+hawaii.plot(
+    ax=ax_hawaii, column=column_to_plot, cmap=cmap, edgecolor="black", linewidth=0.5
+)
 ax_hawaii.set_xlim(-162, -152)
 ax_hawaii.set_ylim(18, 24)
 
 # Annotate the states
-annotate_states(contiguous_us, ax_main)
-annotate_states(alaska, ax_alaska)
-annotate_states(hawaii, ax_hawaii)
+annotate_states(contiguous_us, ax_main, value_col=column_to_plot)
+annotate_states(alaska, ax_alaska, value_col=column_to_plot)
+annotate_states(hawaii, ax_hawaii, value_col=column_to_plot)
 
 for ax in fig.axes:
     ax.set_axis_off()
@@ -147,4 +157,12 @@ plt.savefig("test", dpi=300, bbox_inches="tight")
 plt.show()
 
 
-# Hexbin
+# ToDO:
+# annotate extreme values only - add a annotate function that finds outliers.
+# Add title for Hawaii and Alaska inside plot
+# add cmap legend
+# add title and sub title
+# add source
+# make all lines of code commented
+# How to add multiple choropleth maps to show different years.
+
