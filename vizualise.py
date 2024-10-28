@@ -372,7 +372,7 @@ fig.legend(
     loc="lower center",
     bbox_to_anchor=(
         0.5,
-        -0.02,
+        0.02,
     ),  # Position the legend at the bottom center of the figure
     ncol=len(color_mapping),  # Arrange items in a single row
     frameon=False,
@@ -408,7 +408,7 @@ fig_text(
 fig_text(
     s="Source: U.S. Bureau of Labour Statistics",
     x=0.93,
-    y=-0.01,
+    y=0.01,
     color=text_color,
     fontsize=8,
     font=other_font,
@@ -421,7 +421,7 @@ fig_text(
 fig_text(
     s="autonomousecon.substack.com",
     x=0.93,
-    y=-0.025,
+    y=0.03,
     color=text_color,
     fontsize=8,
     font=other_font,
@@ -432,15 +432,12 @@ fig_text(
 
 # Adjust plot layout
 plt.subplots_adjust(hspace=0.04)
-plt.savefig("test", dpi=300, bbox_inches="tight")
+plt.savefig("employment_map", dpi=300, bbox_inches="tight")
 plt.show()
 
 
 # ToDO:
 # annotate extreme values only - add a annotate function that finds outliers.
-# Make font colour white for some states
 # offset the position slightly for some states
 # set background colour for the entire figure
-# Put number undeath the state letters in brackets
-# add title and sub title source and autonomousecon URL
 # make all lines of code commented
