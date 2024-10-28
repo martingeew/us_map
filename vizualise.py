@@ -83,15 +83,15 @@ data["centroid"] = data_projected["centroid"].to_crs(data.crs)
 data["binned"] = pd.cut(
     data[column_to_plot],
     bins=[0, 1, 2, 3, float("inf")],
-    labels=["0-1", "1-2", "2-3", "3+"],
+    labels=["0-1%", "1-2%", "2-3%", "3+%"],
 )
 
 # Define custom colors for each bin
 color_mapping = {
-    "0-1": "#05DBF2FF",
-    "1-2": "#05C7F2FF",
-    "2-3": "#05AFF2FF",
-    "3+": "#035AA6FF",
+    "0-1%": "#05DBF2FF",
+    "1-2%": "#05C7F2FF",
+    "2-3%": "#05AFF2FF",
+    "3+%": "#035AA6FF",
 }
 
 # Separate Alaska, Hawaii, and the contiguous U.S.
@@ -166,7 +166,6 @@ legend_handles = [
 
 fig.legend(
     handles=legend_handles,
-    title="Employment growth (APC)",
     loc="lower center",
     bbox_to_anchor=(
         0.5,
@@ -177,7 +176,7 @@ fig.legend(
 )
 
 # Adjust plot layout
-plt.subplots_adjust(hspace=0.06)
+plt.subplots_adjust(hspace=0.04)
 plt.savefig("test", dpi=300, bbox_inches="tight")
 plt.show()
 
