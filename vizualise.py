@@ -378,6 +378,58 @@ fig.legend(
     frameon=False,
 )
 
+# title
+fig_text(
+    s="Employment growth has been uneven by State",
+    x=0.15,
+    y=0.9,
+    color=text_color,
+    fontsize=20,
+    font=font,
+    ha="left",
+    va="top",
+    ax=ax,
+)
+
+# subtitle
+fig_text(
+    s="Total nonfarm employemnt, annual percent change (Sep 2024)",
+    x=0.15,
+    y=0.85,
+    color=text_color,
+    fontsize=12,
+    font=other_font,
+    ha="left",
+    va="top",
+    ax=ax,
+)
+
+# credit
+fig_text(
+    s="Source: U.S. Bureau of Labour Statistics",
+    x=0.93,
+    y=-0.01,
+    color=text_color,
+    fontsize=8,
+    font=other_font,
+    ha="right",
+    va="top",
+    ax=ax,
+)
+
+# credit
+fig_text(
+    s="autonomousecon.substack.com",
+    x=0.93,
+    y=-0.025,
+    color=text_color,
+    fontsize=8,
+    font=other_font,
+    ha="right",
+    va="top",
+    ax=ax,
+)
+
 # Adjust plot layout
 plt.subplots_adjust(hspace=0.04)
 plt.savefig("test", dpi=300, bbox_inches="tight")
