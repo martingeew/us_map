@@ -21,21 +21,37 @@ text_color = "black"
 
 
 # Function to annotate states
+# Function to annotate states
 def annotate_states(geo_df, ax, value_col):
     states_to_annotate = list(geo_df["STUSPS"].unique())
+
     for state in states_to_annotate:
+        # Get the centroid coordinates and rate for each state
         centroid = geo_df.loc[geo_df["STUSPS"] == state, "centroid"].values[0]
         x, y = centroid.coords[0]
         rate = geo_df.loc[geo_df["STUSPS"] == state, value_col].values[0]
-        ax.text(
+
+        # Determine text color based on rate value
+        color_text = "white" if rate >= 3 else text_color  # e.g., 'black'
+
+        # Set annotation text format based on state condition
+        if state in ["NC", "VA", "TN", "KY", "NY"]:
+            text = f"<{state.upper()}>:{rate:.2f}"
+        else:
+            text = f"<{state.upper()}>:\n{rate:.2f}"
+
+        # Add the annotation
+        ax_text(
             x=x,
             y=y,
-            # s=f"{state.upper()}: {rate:.2f}",
-            s=f"{state.upper()}",
+            s=text,
             fontsize=8,
             ha="center",
             va="center",
-            fontweight="bold",
+            font=other_font,
+            color=color_text,
+            ax=ax,
+            highlight_textprops=[{"font": other_bold_font}],
         )
 
 
