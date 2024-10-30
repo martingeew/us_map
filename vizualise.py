@@ -7,30 +7,6 @@ from drawarrow import fig_arrow, ax_arrow
 from highlight_text import fig_text, ax_text
 from pyfonts import load_font
 
-# load the fonts
-font = load_font(
-    "https://github.com/dharmatype/Bebas-Neue/blob/master/fonts/BebasNeue(2018)ByDhamraType/ttf/BebasNeue-Regular.ttf?raw=true"
-)
-other_font = load_font(
-    "https://github.com/bBoxType/FiraSans/blob/master/Fira_Sans_4_3/Fonts/Fira_Sans_TTF_4301/Normal/Roman/FiraSans-Light.ttf?raw=true"
-)
-other_bold_font = load_font(
-    "https://github.com/bBoxType/FiraSans/blob/master/Fira_Sans_4_3/Fonts/Fira_Sans_TTF_4301/Normal/Roman/FiraSans-Medium.ttf?raw=true"
-)
-text_color = "black"
-
-adjustments = {
-    "HI": (+0.5, +1.5),
-    "AK": (0, +0.5),
-    "SC": (+0.3, -0.28),
-    "LA": (-0.5, 0),
-    "VA": (0, -0.5),
-    "MI": (+0.5, 0),
-    "FL": (+0.75, 0),
-    "WV": (-0.13, -0.2),
-}
-
-
 # Function to annotate states
 def annotate_states(geo_df, ax, value_col):
     states_to_annotate = list(geo_df["STUSPS"].unique())
@@ -132,7 +108,6 @@ def plot_with_legend(data, ax, xlim, ylim):
     - ax: Matplotlib axis to plot on.
     - xlim: Tuple for x-axis limits.
     - ylim: Tuple for y-axis limits.
-    - show_legend: Boolean, if True displays the legend; if False, hides the legend.
     """
     # Plot data with custom color mapping
     data.plot(
@@ -167,7 +142,52 @@ def set_background_color(ax, color="#f5f5f5"):
     for spine in ax.spines.values():
         spine.set_visible(False)
 
+# Load the fonts
+font = load_font(
+    "https://github.com/dharmatype/Bebas-Neue/blob/master/fonts/BebasNeue(2018)ByDhamraType/ttf/BebasNeue-Regular.ttf?raw=true"
+)
+other_font = load_font(
+    "https://github.com/bBoxType/FiraSans/blob/master/Fira_Sans_4_3/Fonts/Fira_Sans_TTF_4301/Normal/Roman/FiraSans-Light.ttf?raw=true"
+)
+other_bold_font = load_font(
+    "https://github.com/bBoxType/FiraSans/blob/master/Fira_Sans_4_3/Fonts/Fira_Sans_TTF_4301/Normal/Roman/FiraSans-Medium.ttf?raw=true"
+)
+text_color = "black"
 
+# Offsets for individual state annotations
+adjustments = {
+    "HI": (+0.5, +1.5),
+    "AK": (0, +0.5),
+    "SC": (+0.3, -0.28),
+    "LA": (-0.5, 0),
+    "VA": (0, -0.5),
+    "MI": (+0.5, 0),
+    "FL": (+0.75, 0),
+    "WV": (-0.13, -0.2),
+}
+
+# Define custom colors for each bin
+color_mapping = {
+    "0-1%": "#33E5F7FF",
+    "1-2%": "#05C7F2FF",
+    "2-3%": "#05AFF2FF",
+    "3+%": "#035AA6FF",
+}
+
+# States where we need annotations with arrows
+outside_state_codes = [
+    "NJ",
+    "DE",
+    "DC",
+    "MD",
+    "VT",
+    "NH",
+    "MA",
+    "CT",
+    "RI",
+]
+
+# Load employment data
 employment_data = pd.read_csv(
     "data\employment_state_apc_20240901_pivot.csv", index_col=0
 )
@@ -175,8 +195,6 @@ employment_data = pd.read_csv(
 # Read the shapefile
 shapefile_path = "data/tl_2023_us_state.shp"
 gdf = gpd.read_file(shapefile_path)
-
-gdf.plot()
 
 # Merge data
 data = gdf.merge(employment_data, how="inner", left_on="STUSPS", right_on="State")
@@ -186,7 +204,7 @@ print(len(data), len(employment_data), len(gdf))
 states_in_df1 = set(gdf["STUSPS"])
 states_in_df2 = set(employment_data["State"])
 
-# States in df1 but not in df2
+# Print states in df1 but not in df2
 states_not_in_intersect = states_in_df1.symmetric_difference(states_in_df2)
 print(states_not_in_intersect)
 
@@ -208,14 +226,6 @@ data["binned"] = pd.cut(
     bins=[0, 1, 2, 3, float("inf")],
     labels=["0-1%", "1-2%", "2-3%", "3+%"],
 )
-
-# Define custom colors for each bin
-color_mapping = {
-    "0-1%": "#33E5F7FF",
-    "1-2%": "#05C7F2FF",
-    "2-3%": "#05AFF2FF",
-    "3+%": "#035AA6FF",
-}
 
 # Separate Alaska, Hawaii, and the contiguous U.S.
 alaska = data[data["NAME"] == "Alaska"]
@@ -349,18 +359,6 @@ annotate_state_with_arrows(
     radius=-0.1,
 )
 
-outside_state_codes = [
-    "NJ",
-    "DE",
-    "DC",
-    "MD",
-    "VT",
-    "NH",
-    "MA",
-    "CT",
-    "RI",
-]
-
 # Annotate the states
 annotate_states(
     contiguous_us[~contiguous_us["STUSPS"].isin(outside_state_codes)],
@@ -373,10 +371,8 @@ annotate_states(hawaii, ax_hawaii, value_col=column_to_plot)
 for ax in fig.axes:
     ax.set_axis_off()
 
-
 set_background_color(ax_hawaii)
 set_background_color(ax_alaska)
-
 
 legend_handles = [
     mpatches.Patch(color=color, label=label) for label, color in color_mapping.items()
