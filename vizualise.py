@@ -19,8 +19,18 @@ other_bold_font = load_font(
 )
 text_color = "black"
 
+adjustments = {
+    "HI": (+0.5, +1.5),
+    "AK": (0, +0.5),
+    "SC": (+0.3, -0.28),
+    "LA": (-0.5, 0),
+    "VA": (0, -0.5),
+    "MI": (+0.5, 0),
+    "FL": (+0.75, 0),
+    "WV": (-0.13, -0.2),
+}
 
-# Function to annotate states
+
 # Function to annotate states
 def annotate_states(geo_df, ax, value_col):
     states_to_annotate = list(geo_df["STUSPS"].unique())
@@ -30,22 +40,27 @@ def annotate_states(geo_df, ax, value_col):
         centroid = geo_df.loc[geo_df["STUSPS"] == state, "centroid"].values[0]
         x, y = centroid.coords[0]
         rate = geo_df.loc[geo_df["STUSPS"] == state, value_col].values[0]
+        try:
+            x += adjustments[state][0]
+            y += adjustments[state][1]
+        except KeyError:
+            pass
 
         # Determine text color based on rate value
         color_text = "white" if rate >= 3 else text_color  # e.g., 'black'
 
         # Set annotation text format based on state condition
-        if state in ["NC", "VA", "TN", "KY", "NY"]:
+        if state in ["NC", "VA", "TN", "KY", "NY", "HI"]:
             text = f"<{state.upper()}>:{rate:.2f}"
         else:
-            text = f"<{state.upper()}>:\n{rate:.2f}"
+            text = f"<{state.upper()}>\n{rate:.2f}"
 
         # Add the annotation
         ax_text(
             x=x,
             y=y,
             s=text,
-            fontsize=8,
+            fontsize=8.5,
             ha="center",
             va="center",
             font=other_font,
@@ -196,7 +211,7 @@ data["binned"] = pd.cut(
 
 # Define custom colors for each bin
 color_mapping = {
-    "0-1%": "#05DBF2FF",
+    "0-1%": "#33E5F7FF",
     "1-2%": "#05C7F2FF",
     "2-3%": "#05AFF2FF",
     "3+%": "#035AA6FF",
@@ -380,7 +395,7 @@ fig.legend(
 
 # title
 fig_text(
-    s="Employment growth has been uneven by State",
+    s="Employment growth by State",
     x=0.15,
     y=0.9,
     color=text_color,
@@ -434,10 +449,3 @@ fig_text(
 plt.subplots_adjust(hspace=0.04)
 plt.savefig("employment_map", dpi=300, bbox_inches="tight")
 plt.show()
-
-
-# ToDO:
-# annotate extreme values only - add a annotate function that finds outliers.
-# offset the position slightly for some states
-# set background colour for the entire figure
-# make all lines of code commented
