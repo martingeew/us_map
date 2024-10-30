@@ -7,8 +7,19 @@ from drawarrow import fig_arrow, ax_arrow
 from highlight_text import fig_text, ax_text
 from pyfonts import load_font
 
+
 # Function to annotate states
 def annotate_states(geo_df, ax, value_col):
+    """
+    Annotates states on a geographic plot with their respective values.
+
+    Parameters:
+    - geo_df: GeoDataFrame containing geographic data, including centroids and state codes.
+    - ax: Matplotlib axis on which the annotations will be plotted.
+    - value_col: Column name containing the values to be displayed for each state.
+
+    The function adds state annotations with custom positioning and color based on the value.
+    """
     states_to_annotate = list(geo_df["STUSPS"].unique())
 
     for state in states_to_annotate:
@@ -141,6 +152,7 @@ def set_background_color(ax, color="#f5f5f5"):
     # Remove the spines
     for spine in ax.spines.values():
         spine.set_visible(False)
+
 
 # Load the fonts
 font = load_font(
