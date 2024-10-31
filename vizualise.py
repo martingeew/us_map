@@ -27,6 +27,7 @@ def annotate_states(geo_df, ax, value_col):
         centroid = geo_df.loc[geo_df["STUSPS"] == state, "centroid"].values[0]
         x, y = centroid.coords[0]
         rate = geo_df.loc[geo_df["STUSPS"] == state, value_col].values[0]
+        # Make small adjustments to annotation locations
         try:
             x += adjustments[state][0]
             y += adjustments[state][1]
@@ -225,7 +226,9 @@ print(states_not_in_intersect)
 # Define column for plotting
 column_to_plot = "apc_20240901"
 
-# Project the data to EPSG:5070 and calculate centroids
+# Project the data to EPSG:5070 and calculate centroids.
+# A projection is a way to represent the 3D surface of the Earth on a 2D map.
+# A centroid is the geometric center or “average” point of a shape.
 data_projected = data.to_crs(epsg=5070)
 data_projected["centroid"] = data_projected.geometry.centroid
 
