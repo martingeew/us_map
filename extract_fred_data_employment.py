@@ -130,10 +130,28 @@ today_date = datetime.today().strftime("%Y%m%d")
 # Save the data to a CSV file with today's date appended
 data.to_csv(f"./data/raw/employment_state_{today_date}.csv", index=True)
 
+### Proccess data for US Map plot
+
 # Calculate the percent change from the same period last year
 df_annual_pct_change = data.pct_change(periods=12) * 100
 
 # Save the apc data to a CSV file with today's date appended
 df_annual_pct_change.to_csv(
     f"./data/processed/employment_state_apc_{today_date}.csv", index=True
+)
+
+# Select the last row of the DataFrame
+selected_row = df_annual_pct_change.iloc[-1]
+
+# Pivot the DataFrame so states are in the first column and values in the second
+pivoted_df = selected_row.reset_index()
+# Extract the date from the column name in the selected row
+date_str = selected_row.name.strftime("%Y%m%d")
+
+# Rename the columns accordingly
+pivoted_df.columns = ["State", f"apc_{date_str}"]
+
+# Save the pivoted DataFrame to a CSV file with today's date appended
+pivoted_df.to_csv(
+    f"./data/processed/employment_state_apc_pivoted_{today_date}.csv", index=False
 )
