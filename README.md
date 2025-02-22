@@ -1,6 +1,6 @@
 # us_map
 
-![Final plot](https://github.com/martingeew/us_map/blob/main/employment_map.png?raw=true)
+![Final plot](https://github.com/martingeew/us_map/blob/main/reports/figures/employment_map.png?raw=true)
 
 
 ## Setting Up Environment Variables
