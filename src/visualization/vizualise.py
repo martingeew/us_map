@@ -6,6 +6,7 @@ import matplotlib.patches as mpatches
 from drawarrow import fig_arrow, ax_arrow
 from highlight_text import fig_text, ax_text
 from pyfonts import load_font
+from datetime import datetime
 
 
 # Function to annotate states
@@ -181,6 +182,7 @@ adjustments = {
 
 # Define custom colors for each bin
 color_mapping = {
+    "-1-0%": "#66F0FAFF",
     "0-1%": "#33E5F7FF",
     "1-2%": "#05C7F2FF",
     "2-3%": "#05AFF2FF",
@@ -202,11 +204,12 @@ outside_state_codes = [
 
 # Load employment data
 employment_data = pd.read_csv(
-    "data\employment_state_apc_20240901_pivot.csv", index_col=0
+    "../../data/processed/employment_state_apc_pivoted_20250222.csv"
 )
 
+
 # Read the shapefile
-shapefile_path = "data/tl_2023_us_state.shp"
+shapefile_path = "../../data/raw/tl_2023_us_state.shp"
 gdf = gpd.read_file(shapefile_path)
 
 # Merge data
@@ -224,7 +227,7 @@ print(states_not_in_intersect)
 # Choropleth
 
 # Define column for plotting
-column_to_plot = "apc_20240901"
+column_to_plot = "apc_20241201"
 
 # Project the data to EPSG:5070 and calculate centroids.
 # A projection is a way to represent the 3D surface of the Earth on a 2D map.
@@ -238,8 +241,8 @@ data["centroid"] = data_projected["centroid"].to_crs(data.crs)
 # Add a binned column based on specified ranges
 data["binned"] = pd.cut(
     data[column_to_plot],
-    bins=[0, 1, 2, 3, float("inf")],
-    labels=["0-1%", "1-2%", "2-3%", "3+%"],
+    bins=[-1, 0, 1, 2, 3, float("inf")],
+    labels=["-1-0%", "0-1%", "1-2%", "2-3%", "3+%"],
 )
 
 # Separate Alaska, Hawaii, and the contiguous U.S.
@@ -456,7 +459,11 @@ fig_text(
     ax=ax,
 )
 
-# Adjust plot layout
+
+# Get today's date in YYYYMMDD format
+today_date = datetime.today().strftime("%Y%m%d")
 plt.subplots_adjust(hspace=0.04)
-plt.savefig("employment_map", dpi=300, bbox_inches="tight")
+plt.savefig(
+    f"../../reports/figures/employment_map_{today_date}", dpi=300, bbox_inches="tight"
+)
 plt.show()
