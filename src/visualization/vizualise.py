@@ -135,27 +135,6 @@ def plot_with_legend(data, ax, xlim, ylim):
     ax.set_ylim(ylim)
 
 
-def set_background_color(ax, color="#f5f5f5"):
-    """
-    Sets the background color of a given subplot.
-
-    Parameters:
-    - ax: Matplotlib axis object on which to set the background color.
-    - color: String, color in hex format to set as the background. Default is slight off-white (#f5f5f5).
-    """
-    # Turn the axis back on, but this also restores labels and ticks
-    ax.set_axis_on()
-
-    # Remove the x and y axis ticks while keeping the spines
-    ax.set_xticks([])
-    ax.set_yticks([])
-    ax.set_facecolor(color)
-
-    # Remove the spines
-    for spine in ax.spines.values():
-        spine.set_visible(False)
-
-
 # Load the fonts
 font = load_font(
     "https://github.com/dharmatype/Bebas-Neue/blob/master/fonts/BebasNeue(2018)ByDhamraType/ttf/BebasNeue-Regular.ttf?raw=true"
@@ -389,8 +368,6 @@ annotate_states(hawaii, ax_hawaii, value_col=column_to_plot)
 for ax in fig.axes:
     ax.set_axis_off()
 
-set_background_color(ax_hawaii)
-set_background_color(ax_alaska)
 
 legend_handles = [
     mpatches.Patch(color=color, label=label) for label, color in color_mapping.items()
@@ -422,7 +399,7 @@ fig_text(
 
 # subtitle
 fig_text(
-    s="Total nonfarm employemnt, annual percent change (Sep 2024)",
+    s="Total nonfarm employemnt, annual percent change (Dec 2024)",
     x=0.15,
     y=0.85,
     color=text_color,
