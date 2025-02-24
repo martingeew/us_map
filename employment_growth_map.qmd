@@ -198,12 +198,12 @@ outside_state_codes = [
 
 # Load employment data
 employment_data = pd.read_csv(
-    "../../data/processed/employment_state_apc_pivoted_20250222.csv"
+    "data/processed/employment_state_apc_pivoted_20250222.csv"
 )
 
 
 # Read the shapefile
-shapefile_path = "../../data/raw/tl_2023_us_state.shp"
+shapefile_path = "data/raw/tl_2023_us_state.shp"
 gdf = gpd.read_file(shapefile_path)
 
 # Merge data
