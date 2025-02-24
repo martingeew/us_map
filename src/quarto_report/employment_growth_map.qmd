@@ -141,7 +141,6 @@ def plot_with_legend(data, ax, xlim, ylim):
     # Plot data with custom color mapping
     data.plot(
         ax=ax,
-        column="binned",
         color=data["binned"].map(color_mapping),
         edgecolor="white",
         linewidth=0.5,
@@ -209,7 +208,6 @@ gdf = gpd.read_file(shapefile_path)
 
 # Merge data
 data = gdf.merge(employment_data, how="inner", left_on="STUSPS", right_on="State")
-print(len(data), len(employment_data), len(gdf))
 
 # Get the set of states from both DataFrames
 states_in_df1 = set(gdf["STUSPS"])
@@ -217,7 +215,6 @@ states_in_df2 = set(employment_data["State"])
 
 # Print states in df1 but not in df2
 states_not_in_intersect = states_in_df1.symmetric_difference(states_in_df2)
-print(states_not_in_intersect)
 
 # Choropleth
 
