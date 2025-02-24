@@ -161,11 +161,11 @@ adjustments = {
 
 # Define custom colors for each bin
 color_mapping = {
-    "-1-0%": "#66F0FAFF",
-    "0-1%": "#33E5F7FF",
-    "1-2%": "#05C7F2FF",
-    "2-3%": "#05AFF2FF",
-    "3+%": "#035AA6FF",
+    "-1-0%": "#FDDBC7FF",  # Orange
+    "0-1%": "#66F0FAFF",  # Light blue
+    "1-2%": "#66CCFFFF",  # Slightly darker blue
+    "2-3%": "#33B2FFFF",  # Darker blue
+    "3+%": "#035AA6FF",  # Darkest blue
 }
 
 # States where we need annotations with arrows
@@ -390,7 +390,7 @@ fig_text(
     x=0.15,
     y=0.9,
     color=text_color,
-    fontsize=20,
+    fontsize=24,
     font=font,
     ha="left",
     va="top",
