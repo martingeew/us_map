@@ -125,7 +125,6 @@ def plot_with_legend(data, ax, xlim, ylim):
     # Plot data with custom color mapping
     data.plot(
         ax=ax,
-        column="binned",
         color=data["binned"].map(color_mapping),
         edgecolor="white",
         linewidth=0.5,
