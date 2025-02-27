@@ -91,6 +91,7 @@ def collect_state_data(
     Parameters:
     - api_key (str): Your FRED API key.
     - state_codes (list): List of state codes, e.g., ['TX', 'CA', 'NY', ...].
+    - series_suffix (str): The suffix for the FRED series ID.
     - observation_start (str): The start date for retrieving data (YYYY-MM-DD).
 
     Returns:
