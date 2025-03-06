@@ -3,6 +3,31 @@ title: "US Employment Growth by State"
 format:
   html:
     code-fold: true
+    toc: false
+    css: |
+      body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+      }
+      .cell {
+        margin: 0;
+        padding: 0;
+      }
+      .cell-output-display {
+        margin: 0;
+        padding: 0;
+      }
+      .cell-output-display img {
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+      }
+      @media (max-width: 768px) {
+        .cell-output-display img {
+          max-height: 100vh;
+        }
+      }
 jupyter: python3
 ---
 Author: Martin Wong @ [Autonomous Econ](https://autonomousecon.substack.com/)<br>
@@ -223,7 +248,7 @@ column_to_plot = "apc_20241201"
 
 # Project the data to EPSG:5070 and calculate centroids.
 # A projection is a way to represent the 3D surface of the Earth on a 2D map.
-# A centroid is the geometric center or “average” point of a shape.
+# A centroid is the geometric center or "average" point of a shape.
 data_projected = data.to_crs(epsg=5070)
 data_projected["centroid"] = data_projected.geometry.centroid
 

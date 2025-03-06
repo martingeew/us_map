@@ -101,6 +101,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
 
+<link rel="stylesheet" href="body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+.cell {
+  margin: 0;
+  padding: 0;
+}
+.cell-output-display {
+  margin: 0;
+  padding: 0;
+}
+.cell-output-display img {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+@media (max-width: 768px) {
+  .cell-output-display img {
+    max-height: 100vh;
+  }
+}">
 </head>
 
 <body class="fullcontent">
@@ -347,7 +370,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a><span class="co"># Project the data to EPSG:5070 and calculate centroids.</span></span>
 <span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a><span class="co"># A projection is a way to represent the 3D surface of the Earth on a 2D map.</span></span>
-<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a><span class="co"># A centroid is the geometric center or “average” point of a shape.</span></span>
+<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a><span class="co"># A centroid is the geometric center or "average" point of a shape.</span></span>
 <span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a>data_projected <span class="op">=</span> data.to_crs(epsg<span class="op">=</span><span class="dv">5070</span>)</span>
 <span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a>data_projected[<span class="st">"centroid"</span>] <span class="op">=</span> data_projected.geometry.centroid</span>
 <span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a></span>
@@ -577,7 +600,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-437"><a href="#cb1-437" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-us-employment" class="quarto-float quarto-figure quarto-figure-center anchored" height="2127" width="2491">
+<div id="fig-us-employment" class="quarto-float quarto-figure quarto-figure-center anchored" width="2491" height="2127">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-us-employment-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="employment_growth_map_files/figure-html/fig-us-employment-output-1.png" id="fig-us-employment" width="2491" height="2127" class="figure-img">
