@@ -13,8 +13,6 @@ full Substack post [here](https://open.substack.com/pub/autonomousecon/p/how-the
 
 ```{python}
 #| label: fig-US-employment
-#| column: screen
-#| out-width: 100%
 
 import pandas as pd
 import geopandas as gpd
