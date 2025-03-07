@@ -49,7 +49,7 @@ def annotate_states(geo_df, ax, value_col):
             x=x,
             y=y,
             s=text,
-            fontsize=8.5,
+            fontsize=4.25,  # Reduced from 8.5 (scaled for 2x smaller)
             ha="center",
             va="center",
             font=other_font,
@@ -84,7 +84,7 @@ def annotate_state_with_arrows(
     - text_y: float, y-coordinate for text placement.
     """
     # Define arrow properties
-    arrow_props = dict(width=0.5, head_width=2, head_length=4, color="black")
+    arrow_props = dict(width=0.25, head_width=1, head_length=2, color="black")
 
     # Retrieve the value to annotate
     state_value = data.loc[data["STUSPS"] == state_code, column_name].values[0]
@@ -104,7 +104,7 @@ def annotate_state_with_arrows(
         y=text_y,
         highlight_textprops=[{"font": other_bold_font}],
         color=text_color,
-        fontsize=9,
+        fontsize=4.5,  # Reduced from 9 (scaled for 2x smaller)
         font=other_font,
         ha="center",
         va="center",
@@ -209,7 +209,7 @@ column_to_plot = "apc_20241201"
 
 # Project the data to EPSG:5070 and calculate centroids.
 # A projection is a way to represent the 3D surface of the Earth on a 2D map.
-# A centroid is the geometric center or “average” point of a shape.
+# A centroid is the geometric center or "average" point of a shape.
 data_projected = data.to_crs(epsg=5070)
 data_projected["centroid"] = data_projected.geometry.centroid
 
@@ -229,8 +229,8 @@ hawaii = data[data["NAME"] == "Hawaii"]
 contiguous_us = data[(data["NAME"] != "Alaska") & (data["NAME"] != "Hawaii")]
 
 # Set up a 2x2 grid layout with custom size ratios
-new_width = 20 * 0.5
-new_height = 15 * 0.5
+new_width = 20 * 0.25  # Reduced from 0.5 to 0.25 (2x smaller)
+new_height = 15 * 0.25  # Reduced from 0.5 to 0.25 (2x smaller)
 fig, ax = plt.subplots(
     2,
     2,
@@ -251,7 +251,7 @@ plot_with_legend(alaska, ax_alaska, xlim=(-200, -100), ylim=(50, 73))
 ax_hawaii = plt.subplot2grid((2, 2), (1, 1), fig=fig)
 plot_with_legend(hawaii, ax_hawaii, xlim=(-162, -152), ylim=(18, 24))
 
-# Annotate states with arrows
+# Annotate states with arrows - scaled coordinates
 annotate_state_with_arrows(
     data,
     fig,
@@ -264,33 +264,33 @@ annotate_state_with_arrows(
     radius=0.2,
 )
 
-# Annotate states with arrows
+# Annotate states with arrows - scaled coordinates
 annotate_state_with_arrows(
     data,
     fig,
     state_code="RI",
     column_name=column_to_plot,
     tail_position=(0.863, 0.6),
-    head_position=(0.815, 0.62),
+    head_position=(0.814, 0.62),
     text_x=0.88,
     text_y=0.6,
     radius=-0.18,
 )
 
-# Annotate states with arrows
+# Annotate states with arrows - scaled coordinates
 annotate_state_with_arrows(
     data,
     fig,
     state_code="CT",
     column_name=column_to_plot,
     tail_position=(0.86, 0.57),
-    head_position=(0.8, 0.62),
+    head_position=(0.8, 0.625),
     text_x=0.88,
     text_y=0.57,
     radius=-0.2,
 )
 
-# Annotate states with arrows
+# Annotate states with arrows - scaled coordinates
 annotate_state_with_arrows(
     data,
     fig,
@@ -303,46 +303,46 @@ annotate_state_with_arrows(
     radius=0.4,
 )
 
-# Annotate states with arrows
+# Annotate states with arrows - scaled coordinates
 annotate_state_with_arrows(
     data,
     fig,
     state_code="DE",
     column_name=column_to_plot,
     tail_position=(0.83, 0.50),
-    head_position=(0.77, 0.565),
+    head_position=(0.765, 0.565),
     text_x=0.83,
     text_y=0.49,
     radius=0.35,
 )
 
-# Annotate states with arrows
+# Annotate states with arrows - scaled coordinates
 annotate_state_with_arrows(
     data,
     fig,
     state_code="MD",
     column_name=column_to_plot,
     tail_position=(0.79, 0.48),
-    head_position=(0.76, 0.56),
+    head_position=(0.756, 0.565),
     text_x=0.79,
     text_y=0.47,
     radius=0.3,
 )
 
-# Annotate states with arrows
+# Annotate states with arrows - scaled coordinates
 annotate_state_with_arrows(
     data,
     fig,
     state_code="VT",
     column_name=column_to_plot,
     tail_position=(0.76, 0.70),
-    head_position=(0.8, 0.67),
+    head_position=(0.81, 0.67),
     text_x=0.74,
     text_y=0.7,
     radius=-0.2,
 )
 
-# Annotate states with arrows
+# Annotate states with arrows - scaled coordinates
 annotate_state_with_arrows(
     data,
     fig,
@@ -381,54 +381,56 @@ fig.legend(
     ),  # Position the legend at the bottom center of the figure
     ncol=len(color_mapping),  # Arrange items in a single row
     frameon=False,
+    fontsize=6,  # Adjusted for 2x smaller
+    prop={"size": 6},  # Adjusted for 2x smaller
 )
 
-# title
+# title - adjusted font size
 fig_text(
     s="Employment growth by State",
     x=0.15,
     y=0.9,
     color=text_color,
-    fontsize=24,
+    fontsize=12,  # Adjusted for 2x smaller
     font=font,
     ha="left",
     va="top",
     ax=ax,
 )
 
-# subtitle
+# subtitle - adjusted font size
 fig_text(
     s="Total nonfarm employemnt, annual percent change (Dec 2024)",
     x=0.15,
     y=0.85,
     color=text_color,
-    fontsize=12,
+    fontsize=6,  # Adjusted for 2x smaller
     font=other_font,
     ha="left",
     va="top",
     ax=ax,
 )
 
-# credit
+# credit - adjusted font size
 fig_text(
     s="Source: U.S. Bureau of Labour Statistics",
     x=0.93,
     y=0.01,
     color=text_color,
-    fontsize=8,
+    fontsize=4,  # Adjusted for 2x smaller
     font=other_font,
     ha="right",
     va="top",
     ax=ax,
 )
 
-# credit
+# credit - adjusted font size
 fig_text(
     s="autonomousecon.substack.com",
     x=0.93,
     y=0.03,
     color=text_color,
-    fontsize=8,
+    fontsize=4,  # Adjusted for 2x smaller
     font=other_font,
     ha="right",
     va="top",
