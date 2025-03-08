@@ -1,5 +1,3 @@
-# pip install pandas matplotlib fredapi plotly nbformat requests
-
 import pandas as pd
 import matplotlib.pyplot as plt
 from fredapi import Fred
@@ -129,7 +127,7 @@ data = collect_state_data(
 today_date = datetime.today().strftime("%Y%m%d")
 
 # Save the data to a CSV file with today's date appended
-data.to_csv(f"./data/raw/employment_state_{today_date}.csv", index=True)
+data.to_csv(f"../../data/raw/employment_state_{today_date}.csv", index=True)
 
 ### Proccess data for US Map plot
 
@@ -138,7 +136,7 @@ df_annual_pct_change = data.pct_change(periods=12) * 100
 
 # Save the apc data to a CSV file with today's date appended
 df_annual_pct_change.to_csv(
-    f"./data/processed/employment_state_apc_{today_date}.csv", index=True
+    f"../../data/processed/employment_state_apc_{today_date}.csv", index=True
 )
 
 # Select the last row of the DataFrame
@@ -154,5 +152,9 @@ pivoted_df.columns = ["State", f"apc_{date_str}"]
 
 # Save the pivoted DataFrame to a CSV file with today's date appended
 pivoted_df.to_csv(
-    f"./data/processed/employment_state_apc_pivoted_{today_date}.csv", index=False
+    f"../../data/processed/employment_state_apc_pivoted_{today_date}.csv", index=False
+)
+# Save the pivoted DataFrame to a CSV file and overwrite the existing file
+pivoted_df.to_csv(
+    f"../../data/processed/employment_state_apc_pivoted_quarto.csv", index=False
 )
