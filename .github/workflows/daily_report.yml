@@ -32,8 +32,9 @@ jobs:
           pip install pandas matplotlib fredapi geopandas pypalettes drawarrow highlight-text python-dotenv
 
       # Step 4: Run the Python script to generate data
-      - name: Run extract_fred_data_employment.py
-        run: python src/data/extract_fred_data_employment.py
+      - name: Run extract_fred_data_employment_quarto.py
+        working-directory: .  # Run from repository root
+        run: python src/data/extract_fred_data_employment_quarto.py
         env:
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
 
