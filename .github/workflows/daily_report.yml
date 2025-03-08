@@ -1,0 +1,66 @@
+name: Monthly Employment Report
+
+on:
+  schedule:
+    - cron: '0 7 * * *'  # Runs at 09:00 AM CET (UTC+2) every day
+  workflow_dispatch:      # Manual trigger
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    env:
+      FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+
+    steps:
+      # Step 1: Check out the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas matplotlib fredapi geopandas pypalettes drawarrow highlight-text python-dotenv
+
+      # Step 4: Run the Python script to generate data
+      - name: Run extract_fred_data_employment.py
+        run: python src/data/extract_fred_data_employment.py
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+
+      # Step 5: Set up Quarto
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      # Step 6: Render Quarto Project
+      - name: Render Quarto Project
+        run: quarto render
+
+      # Step 7: Configure Git and commit changes
+      - name: Configure Git and Push Changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add data/raw/*.csv
+          git add data/processed/*.csv
+          git add _site/*  # Add the rendered Quarto site
+          git commit -m "Update employment data and website $(date +'%Y-%m-%d')"
+          git push
+
+      # Step 8: Upload data files as artifacts
+      - name: Upload data files as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: employment-data-reports
+          path: |
+            data/raw/*.csv
+            data/processed/*.csv
