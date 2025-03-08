@@ -2,7 +2,7 @@ name: Monthly Employment Report
 
 on:
   schedule:
-    - cron: '0 7 * * *'  # Runs at 09:00 AM CET (UTC+2) every day
+    - cron: '0 7 1 * *'  # Runs at 09:00 AM CET (UTC+2) on the first day of every month
   workflow_dispatch:      # Manual trigger
 
 jobs:
