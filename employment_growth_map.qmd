@@ -219,7 +219,7 @@ data = gdf.merge(employment_data, how="inner", left_on="STUSPS", right_on="State
 # Choropleth
 
 # Define column for plotting
-column_to_plot = "apc_20241201"
+column_to_plot = employment_data.columns[1]
 
 # Project the data to EPSG:5070 and calculate centroids.
 # A projection is a way to represent the 3D surface of the Earth on a 2D map.
