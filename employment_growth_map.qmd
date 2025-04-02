@@ -221,6 +221,15 @@ data = gdf.merge(employment_data, how="inner", left_on="STUSPS", right_on="State
 # Define column for plotting
 column_to_plot = employment_data.columns[1]
 
+# Extract the date part (YYYYMMDD) from the string
+date_part = column_to_plot.split("_")[1]
+
+# Convert the date part to a datetime object
+date_obj = datetime.strptime(date_part, "%Y%m%d")
+
+# Format the datetime object to get the month and year as words
+formatted_date = date_obj.strftime("%B %Y")
+
 # Project the data to EPSG:5070 and calculate centroids.
 # A projection is a way to represent the 3D surface of the Earth on a 2D map.
 # A centroid is the geometric center or "average" point of a shape.
@@ -414,7 +423,7 @@ fig_text(
 
 # subtitle - adjusted font size
 fig_text(
-    s="Total nonfarm employemnt, annual percent change (Dec 2024)",
+    s=f"Total nonfarm employemnt, annual percent change ({formatted_date})",
     x=0.15,
     y=0.85,
     color=text_color,
