@@ -144,12 +144,14 @@ date_str = selected_row.name.strftime("%Y%m%d")
 pivoted_df.columns = ["State", f"apc_{date_str}"]
 
 # Save the data to a CSV file with today's date appended
-data.to_csv(f"data/raw/employment_state_{today_date}.csv", index=True)
+data.to_csv(f"../../data/raw/employment_state_{today_date}.csv", index=True)
 
 # Save the apc data to a CSV file with today's date appended
 df_annual_pct_change.to_csv(
-    f"data/processed/employment_state_apc_{today_date}.csv", index=True
+    f"../../data/processed/employment_state_apc_{today_date}.csv", index=True
 )
 
 # Save the pivoted DataFrame to a CSV file and overwrite the existing file
-pivoted_df.to_csv("data/processed/employment_state_apc_pivoted_quarto.csv", index=False)
+pivoted_df.to_csv(
+    "../../data/processed/employment_state_apc_pivoted_quarto.csv", index=False
+)
